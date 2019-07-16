@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Robot Controls</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <style>
+ 
+    </style>
+  </head>
+  <body>
+    <div id="statusOut"></div>
+    <div id="statusIn"></div>
+    <button onclick="updateRobot('left')">Left</button>
+    <button onclick="updateRobot('forward')">Forward</button>
+    <button onclick="updateRobot('right')">Right</button>
+    <button onclick="updateRobot('back')">Back</button>
+    <button onclick="updateRobot('stop')">Stop</button>
+
+    <script>
+      var data,data2;
+      var socket = io.connect('http://127.0.0.1:5001');
+      function updateRobot(status){
+	$('#statusOut').html("Us: " + status);
+	socket.emit('command', status);
+      }
+      socket.on('robot', function(msg){
+          $('#statusIn').html("Python: " + msg);
+      });
+
+    </script>
+  </body>
+</html>

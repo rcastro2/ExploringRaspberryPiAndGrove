@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Robot</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <style>
+ 	#view{
+		border-radius:20px;
+		box-shadow:2px 2px 2px black;
+	}
+    </style>
+  </head>
+  <body>
+    <img src="" id="view" style="width:300px">
+    <script>
+	  var i = document.getElementById("view");
+          setInterval(function(){
+                var img = new Image();
+                img.onload = function(){
+                  i.src = img.src;
+                }
+                img.src = "image.jpg?r=" + Math.random();
+          },500);
+    </script>
+    <div id="statusOut"></div>
+    <div id="statusIn"></div>
+    <input type="text" onkeypress="updateRobot()" style="color:white">
+
+    <script>
+      	var data,data2;
+      	var socket = io.connect('http://127.0.0.1:5001');
+      	var keys = {97:"left",119:"forward",100:"right",115:"back",32:"stop"}
+      	function updateRobot(e){
+          var code = event.which || event.keyCode;
+          $('#statusOut').html("Us: " + keys[code]);
+          socket.emit('command', keys[code]);
+        }
+        socket.on('robot', function(msg){
+          	$('#statusIn').html("Python: " + msg);
+      	});
+
+    </script>
+  </body>
+</html>
