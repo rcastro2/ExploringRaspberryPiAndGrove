@@ -43,8 +43,8 @@ class Led(GPIO):
     def on(self):
         self.write(1)
         
-    def off(self)
-            self.write(0)
+    def off(self):
+        self.write(0)
 
 class Light(object):
     def __init__(self, pin):
@@ -57,6 +57,16 @@ class Light(object):
         return value
 
 class Sound(object):
+    def __init__(self, pin):
+        #Analog Port
+        self.pin = pin
+        self.adc = ADC()
+
+    def read(self):
+        value = self.adc.read(self.pin)
+        return value
+    
+class GSR(object):
     def __init__(self, pin):
         #Analog Port
         self.pin = pin
@@ -139,7 +149,9 @@ class Temperature(object):
         if unit == 'f':
             temp = (temp * 9/5) + 32
         return temp
-   
+
+
+
 class DHT(object):
     def __init__(self, pin):
         #Digital Port
@@ -263,7 +275,7 @@ class Motor(object):
 	SPEED_MAX                   = 100
 
 	def __init__(self,address=0x0f):
-                #I2C Port
+                #I2C Port - Grove - I2C Motor Driver V1.3
 		self.I2CAddr = address
 		self.bus = Bus()
 		self.motor = [null,DCMotor(),DCMotor]
